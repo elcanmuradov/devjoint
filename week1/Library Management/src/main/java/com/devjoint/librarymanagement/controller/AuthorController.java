@@ -1,0 +1,55 @@
+package com.devjoint.librarymanagement.controller;
+
+import com.devjoint.librarymanagement.dto.ApiResponse;
+import com.devjoint.librarymanagement.dto.author.AuthorDto;
+import com.devjoint.librarymanagement.dto.author.AuthorRequest;
+import com.devjoint.librarymanagement.dto.book.BookDto;
+import com.devjoint.librarymanagement.service.AuthorService;
+import com.devjoint.librarymanagement.service.BookService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/author")
+public class AuthorController {
+    private final AuthorService authorService;
+    private final BookService bookService;
+
+    @PostMapping("/create")
+    public ResponseEntity<ApiResponse<AuthorDto>> addAuthor(@RequestBody @Valid AuthorRequest request){
+        return ResponseEntity.status(201).body(ApiResponse.success(authorService.createAuthor(request)));
+    }
+
+    @PutMapping("/{id}/update")
+    public ResponseEntity<ApiResponse<AuthorDto>> updateAuthor(@PathVariable UUID id, @RequestBody AuthorRequest request){
+        return ResponseEntity.status(200).body(ApiResponse.success(authorService.updateAuthor(id, request)));
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<ApiResponse<Void>> deleteAuthor(@PathVariable UUID id){
+       return ResponseEntity.status(200).body(ApiResponse.success(authorService.deleteAuthor(id)));
+    }
+
+    @GetMapping("")
+    public ResponseEntity<ApiResponse<List<AuthorDto>>> getAllAuthors(){
+        return  ResponseEntity.status(200).body(ApiResponse.success(authorService.getAllAuthors()));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<AuthorDto>> getAuthorById(@PathVariable UUID id){
+        return ResponseEntity.status(200).body(ApiResponse.success(authorService.getAuthor(id)));
+    }
+
+    @GetMapping("/{id}/books")
+    public ResponseEntity<ApiResponse<List<BookDto>>> getBooksByAuthorId(@PathVariable UUID id){
+        return ResponseEntity.status(200).body(ApiResponse.success(bookService.getBooksByAuthorId(id)));
+    }
+}

@@ -8,6 +8,8 @@ import com.devjoint.librarymanagement.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,8 +38,8 @@ public class BookController {
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<List<BookDto>>> getAllBooks(){
-        return ResponseEntity.status(200).body(ApiResponse.success(bookService.getAllBooks()));
+    public ResponseEntity<ApiResponse<Page<BookDto>>> getAllBooks(Integer page, Integer pageSize){
+        return ResponseEntity.status(200).body(ApiResponse.success(bookService.getAllBooks(page,pageSize)));
     }
 
     @GetMapping("/{id}")

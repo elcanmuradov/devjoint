@@ -8,6 +8,7 @@ import com.devjoint.librarymanagement.service.AuthorService;
 import com.devjoint.librarymanagement.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +50,7 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}/books")
-    public ResponseEntity<ApiResponse<List<BookDto>>> getBooksByAuthorId(@PathVariable UUID id){
-        return ResponseEntity.status(200).body(ApiResponse.success(bookService.getBooksByAuthorId(id)));
+    public ResponseEntity<ApiResponse<Page<BookDto>>> getBooksByAuthorId(@PathVariable UUID id, Integer page, Integer pageSize){
+        return ResponseEntity.status(200).body(ApiResponse.success(bookService.getBooksByAuthorId(id,page,pageSize)));
     }
 }

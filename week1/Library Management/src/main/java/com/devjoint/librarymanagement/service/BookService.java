@@ -8,8 +8,10 @@ import com.devjoint.librarymanagement.exception.NotFoundException;
 import com.devjoint.librarymanagement.repository.AuthorRepository;
 import com.devjoint.librarymanagement.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,21 +39,10 @@ public class BookService {
 
     }
 
-    public List<BookDto> getBooksByAuthorId(UUID id) {
-        List<BookDto> books = new ArrayList<>();
-
-        var opt = authorRepository.findById(id);
-        if (opt.isEmpty()) {
-            throw new NotFoundException("Author not found");
-        }
-
-        var author = opt.get();
-
-        bookRepository.findBooksByAuthor(author).forEach(book -> {
-            books.add(bookToDto(book));
-        });
-
-        return books;
+    public Page<BookDto> getBooksByAuthorId(UUID id, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Author author = authorRepository.findById(id).orElseThrow(() -> new NotFoundException("Author not found"));
+        return bookRepository.findBooksByAuthor(author,pageable).map(this::bookToDto);
 
     }
 
@@ -81,12 +72,9 @@ public class BookService {
 
     }
 
-    public List<BookDto> getAllBooks() {
-        List<BookDto> books = new ArrayList<>();
-        bookRepository.findAll().forEach(book -> {
-            books.add(bookToDto(book));
-        });
-        return books;
+    public Page<BookDto> getAllBooks(Integer page, Integer pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return bookRepository.findAll(pageable).map(this::bookToDto);
     }
 
 

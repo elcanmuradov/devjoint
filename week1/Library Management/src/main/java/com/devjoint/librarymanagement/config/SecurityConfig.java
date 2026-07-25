@@ -18,6 +18,8 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/api/auth/login","/api/auth/register").permitAll()
+                        .requestMatchers("/api/author/{id}/delete","/api/author/{id}/update","/api/author/create").hasRole("ADMIN")
+                        .requestMatchers("/api/books/{id}/update","/api/books/{id}/delete","/api/books/create").hasRole("ADMIN")
                         .anyRequest().authenticated()
 
                 )

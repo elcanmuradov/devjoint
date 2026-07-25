@@ -16,6 +16,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(ApiResponse.fail(e.getMessage()));
     }
 
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<ApiResponse<String>> handleAuthException(AuthException e) {
+        return ResponseEntity.status(401).body(ApiResponse.fail(e.getMessage()));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return ResponseEntity.status(400).body(ApiResponse.fail(e.getMessage()));

@@ -40,6 +40,9 @@ public class User implements UserDetails {
     @Column(name = "birth_date",nullable = false)
     private LocalDate birthDate;
 
+    @Column(name = "password",nullable = false)
+    private String password;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -57,13 +60,13 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.getFullName();
+        return password;
     }
 
 
     @Override
     public String getUsername() {
-        return this.getEmail();
+        return email;
     }
 }
 

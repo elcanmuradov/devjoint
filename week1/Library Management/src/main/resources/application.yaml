@@ -8,3 +8,5 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+  security:
+    secret-key: 2d8365796b39aab7c47f925e9f561a1f5cefa5032692c75ee025456baa4813c22128998da2fad940250f39a8261d93a8c0654f2e84e42e8555d2cc9fd9dc80b2

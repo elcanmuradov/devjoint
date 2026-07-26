@@ -12,6 +12,7 @@ import com.devjoint.librarymanagement.repository.RefreshTokenRepository;
 import com.devjoint.librarymanagement.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -121,8 +123,9 @@ public class AuthService {
     public Void logout(String token) {
         UUID userId = UUID.fromString(jwtService.getUserIdFromToken(token));
         var optional = refreshTokenRepository.findRefreshTokenByUserId(userId);
+        log.info(optional.toString());
         if (optional.isEmpty()) {
-            throw new AuthException("Invalid token");
+            throw new AuthException("Invalid Refresh token");
         }
 
         RefreshToken refreshToken = optional.get();

@@ -52,7 +52,7 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get author via id")
+    @Operation(summary = "Get author  id")
     public ResponseEntity<ApiResponse<AuthorDto>> getAuthorById(@PathVariable UUID id){
         return ResponseEntity.status(200).body(ApiResponse.success(authorService.getAuthor(id)));
     }

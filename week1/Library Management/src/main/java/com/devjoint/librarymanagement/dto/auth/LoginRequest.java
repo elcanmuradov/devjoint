@@ -9,7 +9,8 @@ import lombok.Data;
 public class LoginRequest {
 
     @Email
-    private String gmail;
+    @NotNull
+    private String email;
 
     @NotNull
     @NotEmpty

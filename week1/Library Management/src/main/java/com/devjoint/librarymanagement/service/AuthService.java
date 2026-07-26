@@ -48,7 +48,7 @@ public class AuthService {
     }
 
     public AuthResponse login(@Valid LoginRequest loginRequest) {
-        var optional = userRepository.findUserByEmail(loginRequest.getGmail());
+        var optional = userRepository.findUserByEmail(loginRequest.getEmail());
         if (optional.isEmpty()) {
             throw new AuthException("Invalid email or password");
         }
@@ -119,7 +119,7 @@ public class AuthService {
     }
 
     public Void logout(String token) {
-        UUID userId = jwtService.getUserIdFromToken(token);
+        UUID userId = UUID.fromString(jwtService.getUserIdFromToken(token));
         var optional = refreshTokenRepository.findRefreshTokenByUserId(userId);
         if (optional.isEmpty()) {
             throw new AuthException("Invalid token");

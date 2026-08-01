@@ -14,9 +14,11 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -140,4 +142,32 @@ public class BookService {
     public Page<BookDto> filter(UUID genreId, UUID authorId, Pageable pageable) {
         return bookRepository.filter(genreId, authorId, pageable).map(this::bookToDto);
     }
+
+
+    public Page<BookDto> search(String title,String authorName,String genreName, Pageable pageable) {
+        Specification<Book> spec = null;
+
+        if(Optional.ofNullable(genreName).isPresent()){
+            spec = BookSpecification.hasTitle(title);
+        }
+
+        if (Optional.ofNullable(authorName).isPresent()) {
+            Specification<Book> authorSpec = BookSpecification.hasAuthorName(authorName);
+            spec = (spec == null) ? authorSpec : spec.and(authorSpec);
+        }
+
+        if (Optional.ofNullable(genreName).isPresent()) {
+            Specification<Book> genreSpec = BookSpecification.hasGenre(genreName);
+            spec = spec.and(genreSpec);
+        }
+
+        if (Optional.ofNullable(spec).isEmpty()) {
+            return bookRepository.findAll(pageable).map(this::bookToDto);
+        }
+
+
+        return bookRepository.findAll(spec, pageable).map(this::bookToDto);
+
+    }
+
 }

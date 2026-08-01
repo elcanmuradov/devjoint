@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,8 +40,7 @@ public class BookService {
 
     }
 
-    public Page<BookDto> getBooksByAuthorId(UUID id, Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<BookDto> getBooksByAuthorId(UUID id, Pageable pageable) {
         Author author = authorRepository.findById(id).orElseThrow(() -> new NotFoundException("Author not found"));
         return bookRepository.findBooksByAuthor(author,pageable).map(this::bookToDto);
 
@@ -72,8 +72,7 @@ public class BookService {
 
     }
 
-    public Page<BookDto> getAllBooks(Integer page, Integer pageSize) {
-        Pageable pageable = PageRequest.of(page, pageSize);
+    public Page<BookDto> getAllBooks(Pageable pageable) {
         return bookRepository.findAll(pageable).map(this::bookToDto);
     }
 

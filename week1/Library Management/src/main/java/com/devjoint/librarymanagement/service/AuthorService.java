@@ -7,10 +7,10 @@ import com.devjoint.librarymanagement.exception.NotFoundException;
 import com.devjoint.librarymanagement.repository.AuthorRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -54,10 +54,9 @@ public class AuthorService {
         return null;
     }
 
-    public List<AuthorDto> getAllAuthors() {
-        List<AuthorDto> authors = new ArrayList<>();
-        authorRepository.findAll().forEach(author -> authors.add(authorToDto(author)));
-        return authors;
+    public Page<AuthorDto> getAllAuthors(Pageable pageable) {
+        Page<Author> authors = authorRepository.findAll(pageable);
+        return authors.map(this::authorToDto);
     }
 
     public AuthorDto getAuthor(UUID uuid) {

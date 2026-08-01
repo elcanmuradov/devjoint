@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,8 +44,8 @@ public class BookController {
 
     @Operation(summary = "Get all books")
     @GetMapping()
-    public ResponseEntity<ApiResponse<Page<BookDto>>> getAllBooks(Integer page, Integer pageSize){
-        return ResponseEntity.status(200).body(ApiResponse.success(bookService.getAllBooks(page,pageSize)));
+    public ResponseEntity<ApiResponse<Page<BookDto>>> getAllBooks(@PageableDefault(page = 0, size = 20) Pageable pageable){
+        return ResponseEntity.status(200).body(ApiResponse.success(bookService.getAllBooks(pageable)));
     }
 
     @Operation(summary = "Get book via id ")

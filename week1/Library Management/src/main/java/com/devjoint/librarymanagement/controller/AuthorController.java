@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -47,19 +49,19 @@ public class AuthorController {
 
     @GetMapping()
     @Operation(summary = "Get all authors")
-    public ResponseEntity<ApiResponse<List<AuthorDto>>> getAllAuthors(){
-        return  ResponseEntity.status(200).body(ApiResponse.success(authorService.getAllAuthors()));
+    public ResponseEntity<ApiResponse<Page<AuthorDto>>> getAllAuthors(@PageableDefault(size = 20) Pageable pageable){
+        return  ResponseEntity.status(200).body(ApiResponse.success(authorService.getAllAuthors(pageable)));
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get author  id")
+    @Operation(summary = "Get author by id")
     public ResponseEntity<ApiResponse<AuthorDto>> getAuthorById(@PathVariable UUID id){
         return ResponseEntity.status(200).body(ApiResponse.success(authorService.getAuthor(id)));
     }
 
     @Operation(summary = "Get author's books")
     @GetMapping("/{id}/books")
-    public ResponseEntity<ApiResponse<Page<BookDto>>> getBooksByAuthorId(@PathVariable UUID id, Integer page, Integer pageSize){
-        return ResponseEntity.status(200).body(ApiResponse.success(bookService.getBooksByAuthorId(id,page,pageSize)));
+    public ResponseEntity<ApiResponse<Page<BookDto>>> getBooksByAuthorId(@PathVariable UUID id, @PageableDefault(page = 0, size = 20) Pageable pageable){
+        return ResponseEntity.status(200).body(ApiResponse.success(bookService.getBooksByAuthorId(id,pageable)));
     }
 }

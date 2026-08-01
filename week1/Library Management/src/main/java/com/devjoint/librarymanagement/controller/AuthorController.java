@@ -28,24 +28,24 @@ public class AuthorController {
     private final BookService bookService;
 
     @Operation(summary = "Create author", description = "Create author via name, birthdate, and  it's own description")
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<ApiResponse<AuthorDto>> addAuthor(@RequestBody @Valid AuthorRequest request){
         return ResponseEntity.status(201).body(ApiResponse.success(authorService.createAuthor(request)));
     }
 
     @Operation(summary = "Update user by id")
-    @PutMapping("/{id}/update")
+    @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<AuthorDto>> updateAuthor(@Parameter(description = "User's id must be UUID", examples = @ExampleObject(value = "88cd0def-561c-481c-94c5-ca432d6dcaa")) @PathVariable UUID id, @RequestBody AuthorRequest request){
         return ResponseEntity.status(200).body(ApiResponse.success(authorService.updateAuthor(id, request)));
     }
 
     @Operation(summary ="Delete author via id")
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteAuthor(@Parameter(description = "User's id must be UUID", examples = @ExampleObject(value = "88cd0def-561c-481c-94c5-ca432d6dcaa")) @PathVariable UUID id){
        return ResponseEntity.status(200).body(ApiResponse.success(authorService.deleteAuthor(id)));
     }
 
-    @GetMapping("")
+    @GetMapping()
     @Operation(summary = "Get all authors")
     public ResponseEntity<ApiResponse<List<AuthorDto>>> getAllAuthors(){
         return  ResponseEntity.status(200).body(ApiResponse.success(authorService.getAllAuthors()));

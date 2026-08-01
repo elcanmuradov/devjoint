@@ -24,19 +24,19 @@ public class BookController {
     private final BookService bookService;
 
     @Operation(summary = "Create book", description = "Create book via authorId, title , and genre")
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<ApiResponse<BookDto>> addBook(@RequestBody @Valid BookRequest request){
         return ResponseEntity.status(201).body(ApiResponse.success(bookService.createBook(request)));
     }
 
     @Operation(summary = "Update book", description = "Update book via authorId, title , and genre")
-    @PutMapping("/{id}/update")
+    @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<BookDto>> updateBook(@PathVariable UUID id, @RequestBody BookRequest request){
         return ResponseEntity.status(200).body(ApiResponse.success(bookService.updateBook(id, request)));
     }
 
     @Operation(summary = "Delete book via id ")
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteBook(@PathVariable UUID id){
         return ResponseEntity.status(200).body(ApiResponse.success(bookService.deleteBook(id)));
     }

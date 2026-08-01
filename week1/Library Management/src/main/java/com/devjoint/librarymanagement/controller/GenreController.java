@@ -24,14 +24,14 @@ public class GenreController {
         return ResponseEntity.ok(ApiResponse.success(genreService.create(request)));
     }
 
-    @PatchMapping()
-    public ResponseEntity<ApiResponse<GenreDto>> update(@RequestBody GenreRequest request) {
-        return ResponseEntity.ok(ApiResponse.success(genreService.update(request)));
+    @PatchMapping("/{id}")
+    public ResponseEntity<ApiResponse<GenreDto>> update(@PathVariable UUID id,@RequestBody GenreRequest request) {
+        return ResponseEntity.ok(ApiResponse.success(genreService.update(id,request)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable UUID id) {
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(genreService.delete(id));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponse.success(genreService.delete(id)));
     }
 
 

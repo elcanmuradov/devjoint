@@ -136,4 +136,8 @@ public class BookService {
 
         return bookToDto(book);
     }
+
+    public Page<BookDto> filter(UUID genreId, UUID authorId, Pageable pageable) {
+        return bookRepository.filter(genreId, authorId, pageable).map(this::bookToDto);
+    }
 }

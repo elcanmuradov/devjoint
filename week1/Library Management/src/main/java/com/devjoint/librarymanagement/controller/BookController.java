@@ -66,6 +66,10 @@ public class BookController {
         return ResponseEntity.ok(ApiResponse.success(bookService.removeGenre(bookId,genreId)));
     }
 
+    @GetMapping()
+    public ResponseEntity<ApiResponse<Page<BookDto>>> filter(@RequestParam("genreId") UUID genreId,@RequestParam("authorId") UUID authorId,@PageableDefault(page = 0, size = 20) Pageable pageable){
+        return ResponseEntity.ok(ApiResponse.success(bookService.filter(genreId,authorId,pageable)))
+    }
 
 
 }

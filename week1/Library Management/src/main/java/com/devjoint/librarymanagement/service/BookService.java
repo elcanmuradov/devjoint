@@ -118,4 +118,22 @@ public class BookService {
 
         return bookToDto(book);
     }
+
+    @Transactional
+    public BookDto removeGenre(UUID bookId, UUID genreId) {
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotFoundException("Book not found"));
+        Genre genre = genreRepository.findGenreById(genreId).orElseThrow(() -> new NotFoundException("Genre not found"));
+        Set<Book> books = genre.getBooks();
+        books.remove(book);
+        genre.setBooks(books);
+
+        genreRepository.save(genre);
+
+        Set<Genre> genres = book.getGenres();
+        genres.remove(genre);
+        book.setGenres(genres);
+        bookRepository.save(book);
+
+        return bookToDto(book);
+    }
 }

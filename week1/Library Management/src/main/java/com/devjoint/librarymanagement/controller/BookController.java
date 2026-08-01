@@ -61,6 +61,11 @@ public class BookController {
         return ResponseEntity.ok(ApiResponse.success(bookService.addGenre(bookId,genreId)));
     }
 
+    @DeleteMapping("/{bookId}/genre")
+    public ResponseEntity<ApiResponse<BookDto>> removeGenre(@PathVariable UUID bookId,@RequestParam UUID genreId){
+        return ResponseEntity.ok(ApiResponse.success(bookService.removeGenre(bookId,genreId)));
+    }
+
 
 
 }

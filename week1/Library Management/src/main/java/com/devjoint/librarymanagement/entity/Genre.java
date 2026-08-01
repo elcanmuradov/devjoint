@@ -1,13 +1,19 @@
 package com.devjoint.librarymanagement.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-// Genre.java
 @Entity
+@Table(name = "books")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -4,6 +4,7 @@ import com.devjoint.librarymanagement.dto.ApiResponse;
 import com.devjoint.librarymanagement.dto.genre.GenreDto;
 import com.devjoint.librarymanagement.dto.genre.GenreRequest;
 import com.devjoint.librarymanagement.entity.Genre;
+import com.devjoint.librarymanagement.service.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/genre")
 public class GenreController {
+
+    private final GenreService genreService;
 
     @PostMapping()
     public ResponseEntity<ApiResponse<GenreDto>> addGenre(@RequestBody GenreRequest request) {

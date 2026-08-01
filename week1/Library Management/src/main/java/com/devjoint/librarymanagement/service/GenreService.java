@@ -21,7 +21,6 @@ public class GenreService {
 
         Genre genre = Genre.builder()
                 .name(request.getName())
-                .books(new HashSet<>())
                 .description(request.getDescription())
                 .build();
 
@@ -45,7 +44,7 @@ public class GenreService {
         return null;
     }
 
-    private GenreDto genreToDto(Genre genre) {
+    public GenreDto genreToDto(Genre genre) {
         return GenreDto.builder()
                 .id(genre.getId())
                 .name(genre.getName())

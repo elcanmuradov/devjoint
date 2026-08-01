@@ -3,7 +3,6 @@ package com.devjoint.librarymanagement.controller;
 import com.devjoint.librarymanagement.dto.ApiResponse;
 import com.devjoint.librarymanagement.dto.genre.GenreDto;
 import com.devjoint.librarymanagement.dto.genre.GenreRequest;
-import com.devjoint.librarymanagement.entity.Genre;
 import com.devjoint.librarymanagement.service.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -3,9 +3,11 @@ package com.devjoint.librarymanagement.controller;
 import com.devjoint.librarymanagement.dto.ApiResponse;
 import com.devjoint.librarymanagement.dto.book.BookDto;
 import com.devjoint.librarymanagement.dto.book.BookRequest;
+import com.devjoint.librarymanagement.dto.genre.GenreRequest;
 import com.devjoint.librarymanagement.entity.Book;
 import com.devjoint.librarymanagement.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,6 +54,11 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<BookDto>> getBookById(@PathVariable UUID id){
         return ResponseEntity.status(200).body(ApiResponse.success(bookService.getBookById(id)));
+    }
+
+    @PostMapping("/{bookId}/genre")
+    public ResponseEntity<ApiResponse<BookDto>> addGenre(@PathVariable UUID bookId,@RequestParam UUID genreId){
+        return ResponseEntity.ok(ApiResponse.success(bookService.addGenre(bookId,genreId)));
     }
 
 

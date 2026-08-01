@@ -14,7 +14,4 @@ public class BookRequest {
 
     @NotNull
     private UUID authorId;
-
-    @NotNull
-    private Genre genre;
 }

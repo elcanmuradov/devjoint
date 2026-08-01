@@ -56,21 +56,25 @@ public class BookController {
         return ResponseEntity.status(200).body(ApiResponse.success(bookService.getBookById(id)));
     }
 
+    @Operation(summary = "Add genre to book")
     @PostMapping("/{bookId}/genre")
     public ResponseEntity<ApiResponse<BookDto>> addGenre(@PathVariable UUID bookId, @RequestParam UUID genreId) {
         return ResponseEntity.ok(ApiResponse.success(bookService.addGenre(bookId, genreId)));
     }
 
+    @Operation(summary = "Remove genre from book")
     @DeleteMapping("/{bookId}/genre")
     public ResponseEntity<ApiResponse<BookDto>> removeGenre(@PathVariable UUID bookId, @RequestParam UUID genreId) {
         return ResponseEntity.ok(ApiResponse.success(bookService.removeGenre(bookId, genreId)));
     }
 
+    @Operation(summary = "Get books by genreId and authorId" )
     @GetMapping("/filter")
     public ResponseEntity<ApiResponse<Page<BookDto>>> filter(@RequestParam("genreId") UUID genreId, @RequestParam("authorId") UUID authorId, @PageableDefault(page = 0, size = 20) Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.success(bookService.filter(genreId, authorId, pageable)));
     }
 
+    @Operation(summary = "Search by title,authorName, or genreName")
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<BookDto>>> search
             (

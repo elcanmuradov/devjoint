@@ -5,6 +5,7 @@ import com.devjoint.librarymanagement.dto.auth.AuthResponse;
 import com.devjoint.librarymanagement.dto.auth.LoginRequest;
 import com.devjoint.librarymanagement.dto.auth.RegisterRequest;
 import com.devjoint.librarymanagement.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,7 @@ public class AuthController {
         return ResponseEntity.status(200).body(ApiResponse.success(authService.refreshToken(refreshToken)));
     }
 
+    @Operation()
     @PostMapping("/logout")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Void>> logout(@RequestHeader("Authorization") String token) {

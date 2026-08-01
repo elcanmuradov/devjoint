@@ -1,6 +1,5 @@
 package com.devjoint.librarymanagement.dto.book;
 
-import com.devjoint.librarymanagement.enums.Genre;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

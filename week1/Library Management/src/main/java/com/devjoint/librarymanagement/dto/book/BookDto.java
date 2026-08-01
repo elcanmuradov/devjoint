@@ -1,6 +1,5 @@
 package com.devjoint.librarymanagement.dto.book;
 
-import com.devjoint.librarymanagement.enums.Genre;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

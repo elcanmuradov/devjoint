@@ -1,13 +1,13 @@
 package com.devjoint.librarymanagement.entity;
 
-import com.devjoint.librarymanagement.enums.Genre;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -32,8 +32,13 @@ public class Book {
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @Enumerated(EnumType.STRING)
-    private Genre genre;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "book_genre",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private Set<Genre> genres = new HashSet<>();
 
     @CreationTimestamp
     private LocalDateTime createdAt;

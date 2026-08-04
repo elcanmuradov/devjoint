@@ -22,6 +22,7 @@ public class GenreService {
         Genre genre = Genre.builder()
                 .name(request.getName())
                 .description(request.getDescription())
+                .books(new HashSet<>())
                 .build();
 
         genre = genreRepository.save(genre);

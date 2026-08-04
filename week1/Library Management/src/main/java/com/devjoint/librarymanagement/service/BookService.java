@@ -13,14 +13,12 @@ import com.devjoint.librarymanagement.repository.GenreRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -77,7 +75,18 @@ public class BookService {
     }
 
     public Page<BookDto> getAllBooks(Pageable pageable) {
-        return bookRepository.findAll(pageable).map(this::bookToDto);
+        Page<UUID> ids = bookRepository.findBookIds(pageable);
+
+        if (ids.isEmpty()) {
+            return Page.empty(pageable);
+        }
+
+        List<Book> books = bookRepository.findByIdsWithDetails(ids.getContent());
+
+        return new PageImpl<>(books, pageable, ids.getTotalElements()).map(this::bookToDto);
+
+
+
     }
 
 

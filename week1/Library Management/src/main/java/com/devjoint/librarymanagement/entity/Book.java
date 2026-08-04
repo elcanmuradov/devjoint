@@ -2,6 +2,7 @@ package com.devjoint.librarymanagement.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -38,6 +39,8 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
+    @Builder.Default
+    @BatchSize(size = 50)
     private Set<Genre> genres = new HashSet<>();
 
     @CreationTimestamp

@@ -2,6 +2,7 @@ package com.devjoint.librarymanagement.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.time.Instant;
 import java.util.UUID;

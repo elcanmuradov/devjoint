@@ -1,5 +1,6 @@
 package com.devjoint.librarymanagement.service;
 
+import com.devjoint.librarymanagement.dto.PageResponse;
 import com.devjoint.librarymanagement.dto.book.BookDto;
 import com.devjoint.librarymanagement.dto.book.BookRequest;
 import com.devjoint.librarymanagement.dto.genre.GenreDto;
@@ -43,9 +44,9 @@ public class BookService {
 
     }
 
-    public Page<BookDto> getBooksByAuthorId(UUID id, Pageable pageable) {
+    public PageResponse<BookDto> getBooksByAuthorId(UUID id, Pageable pageable) {
         Author author = authorRepository.findById(id).orElseThrow(() -> new NotFoundException("Author not found"));
-        return bookRepository.findBooksByAuthor(author,pageable).map(this::bookToDto);
+        return PageResponse.from(bookRepository.findBooksByAuthor(author,pageable).map(this::bookToDto));
 
     }
 
@@ -74,16 +75,16 @@ public class BookService {
 
     }
 
-    public Page<BookDto> getAllBooks(Pageable pageable) {
+    public PageResponse<BookDto> getAllBooks(Pageable pageable) {
         Page<UUID> ids = bookRepository.findBookIds(pageable);
 
         if (ids.isEmpty()) {
-            return Page.empty(pageable);
+            return PageResponse.from(Page.empty(pageable));
         }
 
         List<Book> books = bookRepository.findByIdsWithDetails(ids.getContent());
 
-        return new PageImpl<>(books, pageable, ids.getTotalElements()).map(this::bookToDto);
+        return PageResponse.from(new PageImpl<>(books, pageable, ids.getTotalElements()).map(this::bookToDto));
 
 
 
@@ -148,12 +149,12 @@ public class BookService {
         return bookToDto(book);
     }
 
-    public Page<BookDto> filter(UUID genreId, UUID authorId, Pageable pageable) {
-        return bookRepository.filter(genreId, authorId, pageable).map(this::bookToDto);
+    public PageResponse<BookDto> filter(UUID genreId, UUID authorId, Pageable pageable) {
+        return PageResponse.from(bookRepository.filter(genreId, authorId, pageable).map(this::bookToDto));
     }
 
 
-    public Page<BookDto> search(String title,String authorName,String genreName, Pageable pageable) {
+    public PageResponse<BookDto> search(String title,String authorName,String genreName, Pageable pageable) {
         Specification<Book> spec = null;
 
         if(Optional.ofNullable(genreName).isPresent()){
@@ -171,11 +172,11 @@ public class BookService {
         }
 
         if (Optional.ofNullable(spec).isEmpty()) {
-            return bookRepository.findAll(pageable).map(this::bookToDto);
+            return PageResponse.from(bookRepository.findAll(pageable).map(this::bookToDto));
         }
 
 
-        return bookRepository.findAll(spec, pageable).map(this::bookToDto);
+        return PageResponse.from(bookRepository.findAll(spec, pageable).map(this::bookToDto));
 
     }
 

@@ -1,5 +1,6 @@
 package com.devjoint.librarymanagement.service;
 
+import com.devjoint.librarymanagement.dto.PageResponse;
 import com.devjoint.librarymanagement.dto.author.AuthorDto;
 import com.devjoint.librarymanagement.dto.author.AuthorRequest;
 import com.devjoint.librarymanagement.entity.Author;
@@ -54,9 +55,9 @@ public class AuthorService {
         return null;
     }
 
-    public Page<AuthorDto> getAllAuthors(Pageable pageable) {
+    public PageResponse<AuthorDto> getAllAuthors(Pageable pageable) {
         Page<Author> authors = authorRepository.findAll(pageable);
-        return authors.map(this::authorToDto);
+        return PageResponse.from(authors.map(this::authorToDto));
     }
 
     public AuthorDto getAuthor(UUID uuid) {

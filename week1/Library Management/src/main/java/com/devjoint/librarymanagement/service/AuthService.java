@@ -29,6 +29,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final AsyncService asyncService;
 
     public AuthResponse register(@Valid RegisterRequest registerRequest) {
 
@@ -44,6 +45,10 @@ public class AuthService {
                 .build();
 
         user = userRepository.save(user);
+
+        var userDto = userToUserDto(user);
+
+        asyncService.sendWelcomeMessage(userDto);
 
         return getAuthResponse(user);
 

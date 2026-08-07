@@ -185,6 +185,11 @@ public class BookService {
             spec = (spec == null) ? titleSpec : spec.and(titleSpec);
         }
 
+        if (Optional.ofNullable(genreName).isPresent()) {
+            Specification<Book> genreSpec = BookSpecification.hasTitle(title);
+            spec = spec.and(genreSpec);
+        }
+
         if (Optional.ofNullable(spec).isEmpty()) {
             return PageResponse.from(bookRepository.findAll(pageable).map(this::bookToDto));
         }

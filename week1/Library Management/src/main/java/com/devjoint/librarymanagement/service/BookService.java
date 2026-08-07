@@ -11,6 +11,7 @@ import com.devjoint.librarymanagement.exception.NotFoundException;
 import com.devjoint.librarymanagement.repository.AuthorRepository;
 import com.devjoint.librarymanagement.repository.BookRepository;
 import com.devjoint.librarymanagement.repository.GenreRepository;
+import org.springframework.cache.annotation.Cacheable;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -44,6 +45,7 @@ public class BookService {
 
     }
 
+    @Cacheable(value = "booksByAuthor", key = "{#p0.toString() + ':' + #p1.pageNumber + ':' + #p1.pageSize + ':' + #p1.sort.toString()}")
     public PageResponse<BookDto> getBooksByAuthorId(UUID id, Pageable pageable) {
         Author author = authorRepository.findById(id).orElseThrow(() -> new NotFoundException("Author not found"));
         return PageResponse.from(bookRepository.findBooksByAuthor(author,pageable).map(this::bookToDto));
@@ -75,6 +77,8 @@ public class BookService {
 
     }
 
+
+    @Cacheable(value = "allBooks", key = "{#p0.pageNumber, #p0.pageSize, #p0.sort.toString()}")
     public PageResponse<BookDto> getAllBooks(Pageable pageable) {
         Page<UUID> ids = bookRepository.findBookIds(pageable);
 
@@ -85,9 +89,6 @@ public class BookService {
         List<Book> books = bookRepository.findByIdsWithDetails(ids.getContent());
 
         return PageResponse.from(new PageImpl<>(books, pageable, ids.getTotalElements()).map(this::bookToDto));
-
-
-
     }
 
 

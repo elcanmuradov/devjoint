@@ -11,9 +11,11 @@ import com.devjoint.librarymanagement.exception.NotFoundException;
 import com.devjoint.librarymanagement.repository.AuthorRepository;
 import com.devjoint.librarymanagement.repository.BookRepository;
 import com.devjoint.librarymanagement.repository.GenreRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,10 @@ public class BookService {
     private final GenreService genreService;
 
 
+    @Caching(evict = {
+            @CacheEvict(value = "allBooks", allEntries = true),
+            @CacheEvict(value = "booksByAuthor", allEntries = true)
+    })
     public BookDto createBook(BookRequest request) {
         Author author = authorRepository.findById(request.getAuthorId()).orElseThrow(() -> new NotFoundException("Author not found"));
 
@@ -60,11 +66,19 @@ public class BookService {
         return bookToDto(opt.get());
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "allBooks", allEntries = true),
+            @CacheEvict(value = "booksByAuthor", allEntries = true)
+    })
     public Void deleteBook( UUID id) {
         bookRepository.deleteById(id);
         return null;
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "allBooks", allEntries = true),
+            @CacheEvict(value = "booksByAuthor", allEntries = true)
+    })
     public BookDto updateBook(UUID id,BookRequest bookRequest) {
         var opt = bookRepository.findById(id);
         if (opt.isEmpty()) {

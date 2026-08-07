@@ -8,7 +8,6 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.Option;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -16,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -42,7 +40,7 @@ public class MediaService {
         }
     }
 
-    public Resource download(String fileName){
+    public Resource load(String fileName){
         try {
 
 
@@ -58,5 +56,4 @@ public class MediaService {
             throw new FileException(e.getMessage());
         }
     }
-
 }

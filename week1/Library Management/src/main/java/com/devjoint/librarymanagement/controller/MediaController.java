@@ -8,9 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.print.attribute.standard.Media;
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/media")
@@ -25,7 +22,7 @@ public class MediaController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<Resource>> download(@RequestParam("fileName") String fileName) {
-        return ResponseEntity.ok(ApiResponse.success(mediaService.download(fileName)));
+        return ResponseEntity.ok(ApiResponse.success(mediaService.load(fileName)));
     }
 
 }

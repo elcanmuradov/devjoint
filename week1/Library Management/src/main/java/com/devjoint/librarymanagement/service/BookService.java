@@ -88,7 +88,6 @@ public class BookService {
         book.setTitle(bookRequest.getTitle());
         bookRepository.save(book);
         return bookToDto(book);
-
     }
 
 

@@ -44,5 +44,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(400).body(e.getMessage());
     }
 
+    @ExceptionHandler(FileException.class)
+    public ResponseEntity<ApiResponse<String>> handleFileException(FileException e) {
+        return ResponseEntity.status(400).body(ApiResponse.fail(e.getMessage()));
+    }
 
 }

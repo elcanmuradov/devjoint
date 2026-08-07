@@ -1,6 +1,7 @@
 package com.devjoint.librarymanagement.controller;
 
 import com.devjoint.librarymanagement.dto.ApiResponse;
+import com.devjoint.librarymanagement.dto.PageResponse;
 import com.devjoint.librarymanagement.dto.author.AuthorDto;
 import com.devjoint.librarymanagement.dto.author.AuthorRequest;
 import com.devjoint.librarymanagement.dto.book.BookDto;
@@ -49,7 +50,7 @@ public class AuthorController {
 
     @GetMapping()
     @Operation(summary = "Get all authors")
-    public ResponseEntity<ApiResponse<Page<AuthorDto>>> getAllAuthors(@PageableDefault(size = 20) Pageable pageable){
+    public ResponseEntity<ApiResponse<PageResponse<AuthorDto>>> getAllAuthors(@PageableDefault(size = 20) Pageable pageable){
         return  ResponseEntity.status(200).body(ApiResponse.success(authorService.getAllAuthors(pageable)));
     }
 
@@ -61,7 +62,7 @@ public class AuthorController {
 
     @Operation(summary = "Get author's books")
     @GetMapping("/{id}/books")
-    public ResponseEntity<ApiResponse<Page<BookDto>>> getBooksByAuthorId(@PathVariable UUID id, @PageableDefault(page = 0, size = 20) Pageable pageable){
+    public ResponseEntity<ApiResponse<PageResponse<BookDto>>> getBooksByAuthorId(@PathVariable UUID id, @PageableDefault(page = 0, size = 20) Pageable pageable){
         return ResponseEntity.status(200).body(ApiResponse.success(bookService.getBooksByAuthorId(id,pageable)));
     }
 }

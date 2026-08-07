@@ -1,6 +1,7 @@
 package com.devjoint.librarymanagement.controller;
 
 import com.devjoint.librarymanagement.dto.ApiResponse;
+import com.devjoint.librarymanagement.dto.PageResponse;
 import com.devjoint.librarymanagement.dto.book.BookDto;
 import com.devjoint.librarymanagement.dto.book.BookRequest;
 import com.devjoint.librarymanagement.dto.genre.GenreRequest;
@@ -46,7 +47,7 @@ public class BookController {
 
     @Operation(summary = "Get all books")
     @GetMapping()
-    public ResponseEntity<ApiResponse<Page<BookDto>>> getAllBooks(@PageableDefault(page = 0, size = 20) Pageable pageable) {
+    public ResponseEntity<ApiResponse<PageResponse<BookDto>>> getAllBooks(@PageableDefault(page = 0, size = 20) Pageable pageable) {
         return ResponseEntity.status(200).body(ApiResponse.success(bookService.getAllBooks(pageable)));
     }
 
@@ -70,13 +71,13 @@ public class BookController {
 
     @Operation(summary = "Get books by genreId and authorId" )
     @GetMapping("/filter")
-    public ResponseEntity<ApiResponse<Page<BookDto>>> filter(@RequestParam("genreId") UUID genreId, @RequestParam("authorId") UUID authorId, @PageableDefault(page = 0, size = 20) Pageable pageable) {
+    public ResponseEntity<ApiResponse<PageResponse<BookDto>>> filter(@RequestParam("genreId") UUID genreId, @RequestParam("authorId") UUID authorId, @PageableDefault(page = 0, size = 20) Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.success(bookService.filter(genreId, authorId, pageable)));
     }
 
     @Operation(summary = "Search by title,authorName, or genreName")
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<BookDto>>> search
+    public ResponseEntity<ApiResponse<PageResponse<BookDto>>> search
             (
              @RequestParam(required = false) String title,
              @RequestParam(required = false) String authorName,
